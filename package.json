@@ -1,0 +1,11 @@
+{
+  "name": "proxy-tool",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/martinoooo/proxy-tool.git",
+  "author": "xiaomeng <xiaomeng@youzan.com>",
+  "license": "MIT",
+  "dependencies": {
+    "pem": "^1.14.4"
+  }
+}
