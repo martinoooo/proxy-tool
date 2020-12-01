@@ -1,8 +1,8 @@
-const tls = require("tls");
-const fs = require("fs");
-const path = require("path");
-const pem = require("pem");
-const https = require("https");
+import tls from "tls";
+import fs from "fs";
+import path from "path";
+import pem from "pem";
+import https from "https";
 
 const httpsHandler = (req, res) => {
   console.log(22223333);
@@ -53,7 +53,7 @@ const pemCreateCertificate = (option) =>
   );
 
 async function getCertificationForHost(host) {
-  const res = await pemCreateCertificate({
+  const res: any = await pemCreateCertificate({
     altNames: [host],
     commonName: host,
     days: 825,
@@ -66,4 +66,4 @@ async function getCertificationForHost(host) {
   };
 }
 
-module.exports = init;
+export default init;

@@ -1,5 +1,5 @@
-const http = require("http");
-const net = require("net");
+import http from "http";
+import net from "net";
 
 const PROXY_HOST = "127.0.0.1";
 
@@ -39,4 +39,4 @@ const httpserver = () => {
   return s;
 };
 
-module.exports = httpserver;
+export default httpserver;
