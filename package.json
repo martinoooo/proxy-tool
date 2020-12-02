@@ -10,6 +10,8 @@
     "build": "tsc"
   },
   "dependencies": {
+    "@martinoooo/dependency-injection": "^0.0.5",
+    "@martinoooo/route-plugin": "^0.0.3",
     "pem": "^1.14.4"
   },
   "devDependencies": {

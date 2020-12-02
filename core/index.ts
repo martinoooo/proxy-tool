@@ -1,5 +1,5 @@
-import httpserver from "./http";
-import httpsserver from "./https";
+import App from './app';
+import { Container } from '@martinoooo/dependency-injection';
 
-httpsserver();
-httpserver();
+const app = Container.get<App>(App);
+app.start();
