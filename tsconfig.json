@@ -14,7 +14,11 @@
     "emitDecoratorMetadata": true,
     "forceConsistentCasingInFileNames": true,
     "declaration": true,
-    "declarationMap": true
+    "declarationMap": true,
+    "paths": {
+      "#definition/*": ["./core/definition/*"],
+      "#handler/*": ["./core/handler/*"],
+    },
   },
   "exclude": ["node_modules", "dist"]
 }

@@ -3,7 +3,29 @@ import fs from 'fs';
 import path from 'path';
 import pem from 'pem';
 import https from 'https';
+import http from 'http';
 import { Service } from '@martinoooo/dependency-injection';
+import RequestHandler from '#handler/request';
+import URL from 'url';
+
+type ISupportProtocal = 'http' | 'https' | 'ws' | 'wss';
+
+function fillReqUrl(
+  req: http.IncomingMessage,
+  protocal: ISupportProtocal = 'http',
+) {
+  const reqUrlObj = URL.parse(req.url as string);
+  const host = req.headers.host;
+  reqUrlObj.host = host;
+  reqUrlObj.protocol = protocal;
+  let urlStr = URL.format(reqUrlObj);
+  // 兼容 ws、wss，因为 URL.format 不会给除 http 和 https 以外的协议添加双斜杠
+  if (protocal.includes('ws')) {
+    urlStr = urlStr.replace(/(wss?:)/, '$1//');
+  }
+  // req._proxyOriginUrl = urlStr;
+  req.url = urlStr;
+}
 
 @Service()
 export default class HttpsService {
@@ -14,15 +36,12 @@ export default class HttpsService {
     encoding: 'utf-8',
   });
 
-  public httpsHandler(req, res) {
-    console.log(22223333);
-    res.writeHead(200);
-    res.end('hello world from https\n');
-    //   return res.end("");
-  }
+  constructor(private requestHandler: RequestHandler) {}
 
   public async init() {
-    // const serverCrt = await getCertificationForHost("internal_https_server");
+    // const serverCrt = await this.getCertificationForHost(
+    //   'internal_https_server',
+    // );
     const server = https
       .createServer({
         SNICallback: (servername, cb) => {
@@ -37,7 +56,11 @@ export default class HttpsService {
         // cert: serverCrt && serverCrt.cert,
         // key: serverCrt && serverCrt.key,
       })
-      .on('request', this.httpsHandler)
+      .on('request', (req: http.IncomingMessage, res: http.ServerResponse) => {
+        console.log(req.headers.host);
+        fillReqUrl(req, 'https');
+        this.requestHandler.handle.bind(this.requestHandler)(req, res);
+      })
       .listen(8989, '0.0.0.0');
     return server;
   }
